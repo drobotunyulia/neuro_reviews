@@ -7,7 +7,7 @@ import psycopg2
 
 dbname = 'reviews'
 user = 'postgres'
-password = 'Monosusuk'
+password = ''
 host = 'localhost'
 port = '5432'
 
