@@ -6,4 +6,4 @@
 - [server/review_site](https://github.com/drobotunyulia/neuro_reviews/tree/main/server/review_site) - веб-сервис django
 - [server/review_site/review/message.py](https://github.com/drobotunyulia/neuro_reviews/blob/main/server/review_site/review/message.py) - модуль для отправки сообщений на электронную почту
 - [server/create.sql](https://github.com/drobotunyulia/neuro_reviews/blob/main/server/create.sql) - скрипт для создания БД
-- [classificator.ipynb]() - нейронка
+- [classificator.ipynb](https://github.com/drobotunyulia/neuro_reviews/blob/main/classificator.ipynb) - нейронка
