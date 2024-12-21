@@ -10,3 +10,7 @@
 
 ## Архитектура решения
 ![model](https://github.com/drobotunyulia/neuro_reviews/blob/main/arch.png)
+
+## Дашборд
+
+![board](https://github.com/drobotunyulia/neuro_reviews/blob/main/board.png)
