@@ -5,6 +5,7 @@ import html
 import re
 import psycopg2
 import schedule
+import classification
 
 dbname = 'reviews'
 user = 'postgres'
