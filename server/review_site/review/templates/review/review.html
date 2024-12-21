@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Page</title>
+    <style>
+        body {
+            background-color: #ECF0F1;
+            color: #FFFFFF; /* Белый текст */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .content {
+            text-align: center;
+            background-color: #34495E;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%; /* Увеличена ширина */
+            max-width: 2000px; /* Увеличена максимальная ширина */
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #FFFFFF; /* Белый текст */
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        canvas {
+            margin-top: 20px;
+            max-width: 100%; /* Канвас будет адаптироваться по ширине */
+        }
+
+        button {
+            background-color: #2980B9;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #1A5276;
+        }
+
+        .charts-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            flex-wrap: nowrap; /* Убираем перенос */
+        }
+
+        .chart {
+            width: 400px; /* Ширина каждого графика */
+            height: 400px; /* Высота каждого графика */
+            margin-right: 20px; /* Расстояние между графиками */
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="content">
+        <h1>Добро пожаловать в систему НейроОтзывы</h1>
+
+        <p>Общее количество отзывов: <strong>{{ total_reviews }}</strong></p>
+        <p>Дата последнего отзыва: <strong>{{ last_review_date }}</strong></p>
+
+        <div class="charts-container">
+            <!-- График с количеством отзывов -->
+            <div class="chart">
+                <canvas id="reviewChart" width="400" height="400"></canvas> <!-- Увеличена ширина и высота -->
+            </div>
+
+            <!-- График с индексами качества -->
+            <div class="chart">
+                <canvas id="qualityIndexChart" width="400" height="400"></canvas> <!-- Увеличена ширина и высота -->
+            </div>
+
+            <!-- График с соотношением отзывов -->
+            <div class="chart">
+                <canvas id="pieChart" width="400" height="400"></canvas> <!-- Увеличена ширина и высота -->
+            </div>
+        </div>
+
+        <form method="get" action="{% url 'review_page' %}">
+            <button type="submit">Обновить данные</button>
+        </form>
+    </div>
+
+    <script>
+        // Данные для графика с отзывами
+        const gratitudeCount = {{ gratitude_count }};
+        const claimCount = {{ claim_count }};
+        const offerCount = {{ offer_count }};
+
+        // Данные для графика с индексами качества
+        const qualityDates = {{ quality_dates|safe }};
+        const qualityValues = {{ quality_values|safe }};
+
+        // Настройка графика с отзывами
+        const ctxReview = document.getElementById('reviewChart').getContext('2d');
+        new Chart(ctxReview, {
+            type: 'bar',
+            data: {
+                labels: ['Благодарности', 'Претензии', 'Предложения'],
+                datasets: [{
+                    label: 'Количество отзывов',
+                    data: [gratitudeCount, claimCount, offerCount],
+                    backgroundColor: [
+                        'rgba(52, 152, 219, 0.8)', // Светло-синий
+                        'rgba(41, 128, 185, 0.8)', // Синий
+                        'rgba(26, 82, 118, 0.8)'   // Темно-синий
+                    ],
+                    borderColor: [
+                        'rgba(52, 152, 219, 1)',
+                        'rgba(41, 128, 185, 1)',
+                        'rgba(26, 82, 118, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#FFFFFF' // Белый текст в легенде
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            color: '#FFFFFF' // Белый текст на оси X
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: '#FFFFFF' // Белый текст на оси Y
+                        }
+                    }
+                }
+            }
+        });
+
+        // Настройка графика с индексами качества
+        const ctxQuality = document.getElementById('qualityIndexChart').getContext('2d');
+        new Chart(ctxQuality, {
+            type: 'line',
+            data: {
+                labels: qualityDates,
+                datasets: [{
+                    label: 'Изменение индекса качества',
+                    data: qualityValues,
+                    fill: false,
+                    borderColor: 'rgba(52, 152, 219, 1)',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#FFFFFF' // Белый текст в легенде
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            color: '#FFFFFF' // Белый текст на оси X
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            color: '#FFFFFF' // Белый текст на оси Y
+                        }
+                    }
+                }
+            }
+        });
+
+        // Настройка графика piechart
+        const ctxPie = document.getElementById('pieChart').getContext('2d');
+        new Chart(ctxPie, {
+            type: 'pie',
+            data: {
+                labels: ['Благодарности', 'Претензии', 'Предложения'],
+                datasets: [{
+                    data: [gratitudeCount, claimCount, offerCount],
+                    backgroundColor: [
+                        'rgba(52, 152, 219, 0.8)', // Светло-синий
+                        'rgba(41, 128, 185, 0.8)', // Синий
+                        'rgba(26, 82, 118, 0.8)'   // Темно-синий
+                    ],
+                    borderColor: [
+                        'rgba(52, 152, 219, 1)',
+                        'rgba(41, 128, 185, 1)',
+                        'rgba(26, 82, 118, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#FFFFFF' // Белый текст в легенде
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
