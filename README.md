@@ -7,3 +7,6 @@
 - [server/review_site/review/message.py](https://github.com/drobotunyulia/neuro_reviews/blob/main/server/review_site/review/message.py) - модуль для отправки сообщений на электронную почту
 - [server/create.sql](https://github.com/drobotunyulia/neuro_reviews/blob/main/server/create.sql) - скрипт для создания БД
 - [classificator.ipynb](https://github.com/drobotunyulia/neuro_reviews/blob/main/classificator.ipynb) - нейронка
+
+## Архитектура решения
+![model](https://github.com/drobotunyulia/neuro_reviews/blob/main/arch.png)
