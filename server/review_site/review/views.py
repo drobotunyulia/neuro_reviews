@@ -7,27 +7,18 @@ from . import message
 def review_page(request):
     # Получаем данные для графика
 
-    '''
     gratitude_count = count_gratitude_reviews()
     claim_count = count_claim_reviews()
     offer_count = count_offer_reviews()
-    '''
 
-    gratitude_count = 100
-    claim_count = 47
-    offer_count = 23
 
     # Получаем последние 5 индексов качества
     last_five_quality_indexes = get_last_five_quality_indexes()
 
     # Формируем списки для графика: даты и индексы качества
-    '''
     quality_dates = [index['data'].strftime('%Y-%m-%d') for index in last_five_quality_indexes]
     quality_values = [index['quality_index'] for index in last_five_quality_indexes]
-    '''
 
-    quality_values = [56, 45, 78, 52, 90]
-    quality_dates = ['2024-12-14', '2024-12-15', '2024-12-16', '2024-12-17', '2024-12-18']
 
     # Передаем данные в контекст
     context = {
@@ -41,7 +32,7 @@ def review_page(request):
     }
 
     mail = message.Mail()
-    mail.send_code("yudrobotun8@gmail.com", 45)
+    mail.send_code("yudrobotun8@gmail.com", quality_values[0])
     return render(request, 'review/review.html', context)
 
 def count_gratitude_reviews():
@@ -62,7 +53,7 @@ def get_last_five_quality_indexes():
     result = []
     for index in last_five_indexes:
         result.append({
-            'quality_index': index.quality_index,
+            'quality_index': float(index.quality_index),  # Преобразуем Decimal в float
             'data': index.data
         })
 
